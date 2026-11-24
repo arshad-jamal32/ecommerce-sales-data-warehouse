@@ -266,9 +266,9 @@ The following visualizations highlight key analytical findings from the warehous
 
 ### Interactive dashboard
 
-`reports/interactive/ecommerce_analytics.html`
+[Open Interactive E-Commerce Analytics Dashboard](reports/interactive/ecommerce_analytics.html)
 
-Open the HTML file in a web browser to explore the interactive analytics dashboard.
+The dashboard provides interactive insights into daily sales, product performance, customer engagement, and conversion funnel analysis. Open the HTML file in a web browser to explore the visualizations.
 
 ## 12. Important Analytical Limitations
 
