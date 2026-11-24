@@ -165,7 +165,7 @@ The `python/` directory contains scripts for:
 ### Clone the repository
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/arshad-jamal32/ecommerce-sales-data-warehouse.git
 cd ecommerce-sales-data-warehouse
 ```
 
