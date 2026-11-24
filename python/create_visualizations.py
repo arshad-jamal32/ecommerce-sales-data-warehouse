@@ -5,6 +5,8 @@ import sys
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib.ticker import FuncFormatter
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -277,8 +279,22 @@ ax.set_title(
     fontweight="bold"
 )
 ax.set_xlabel("Date")
-ax.set_ylabel("Revenue proxy (dataset price units)")
-ax.grid(axis="y")
+ax.set_ylabel("Revenue proxy (millions of dataset price units)")
+ax.grid(axis="y", alpha=0.3)
+
+# Display only October 2019 dates
+ax.set_xlim(
+    pd.Timestamp("2019-10-01"),
+    pd.Timestamp("2019-10-31 23:59:59")
+)
+
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+
+# Format revenue axis in millions
+ax.yaxis.set_major_formatter(
+    FuncFormatter(lambda value, position: f"{value / 1_000_000:.1f}M")
+)
 
 ax.tick_params(axis="x", rotation=45)
 
@@ -677,6 +693,16 @@ fig.write_html(
     dashboard_path,
     include_plotlyjs=True
 )
+
+# Remove trailing spaces and tabs from generated HTML
+html_content = dashboard_path.read_text(encoding="utf-8")
+
+cleaned_html = "\n".join(
+    line.rstrip(" \t")
+    for line in html_content.splitlines()
+) + "\n"
+
+dashboard_path.write_text(cleaned_html, encoding="utf-8")
 
 print("Created: ecommerce_analytics.html")
 
