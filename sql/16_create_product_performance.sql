@@ -1,0 +1,51 @@
+-- ============================================
+-- E-COMMERCE DATA WAREHOUSE
+-- STEP 16: GOLD PRODUCT PERFORMANCE
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS
+    MY_FIRST_DB.GOLD.PRODUCT_PERFORMANCE
+AS
+
+SELECT
+    P.PRODUCT_ID,
+
+    P.CATEGORY_ID,
+
+    P.CATEGORY_CODE,
+
+    P.BRAND,
+
+    P.BRAND_CONFLICT_FLAG,
+
+    COUNT_IF(E.EVENT_TYPE = 'view')
+        AS TOTAL_VIEWS,
+
+    COUNT_IF(E.EVENT_TYPE = 'cart')
+        AS TOTAL_CART_EVENTS,
+
+    COUNT_IF(E.EVENT_TYPE = 'purchase')
+        AS TOTAL_PURCHASE_EVENTS,
+
+    SUM(
+        CASE
+            WHEN E.EVENT_TYPE = 'purchase'
+            THEN E.PRICE
+            ELSE 0
+        END
+    ) AS TOTAL_REVENUE,
+
+    COUNT(DISTINCT E.USER_ID)
+        AS UNIQUE_USERS
+
+FROM MY_FIRST_DB.SILVER.CLEAN_EVENTS E
+
+INNER JOIN MY_FIRST_DB.SILVER.DIM_PRODUCTS P
+    ON E.PRODUCT_ID = P.PRODUCT_ID
+
+GROUP BY
+    P.PRODUCT_ID,
+    P.CATEGORY_ID,
+    P.CATEGORY_CODE,
+    P.BRAND,
+    P.BRAND_CONFLICT_FLAG;

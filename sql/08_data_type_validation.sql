@@ -1,0 +1,42 @@
+
+-- ============================================
+-- E-COMMERCE DATA WAREHOUSE
+-- STEP 08: DATA TYPE VALIDATION
+-- ============================================
+
+SELECT
+    COUNT(*) AS TOTAL_RECORDS,
+
+    COUNT_IF(
+        TRY_TO_TIMESTAMP_NTZ(
+            REPLACE(TRIM(EVENT_TIME), ' UTC', ''),
+            'YYYY-MM-DD HH24:MI:SS'
+        ) IS NULL
+    ) AS INVALID_EVENT_TIME,
+
+    COUNT_IF(
+        TRY_TO_DECIMAL(TRIM(PRICE), 18, 2) IS NULL
+    ) AS INVALID_PRICE,
+
+    COUNT_IF(
+        TRY_TO_DECIMAL(TRIM(PRICE), 18, 2) <= 0
+    ) AS NON_POSITIVE_PRICE,
+
+    COUNT_IF(
+        TRY_TO_NUMBER(TRIM(PRODUCT_ID)) IS NULL
+    ) AS INVALID_PRODUCT_ID,
+
+    COUNT_IF(
+        TRY_TO_NUMBER(TRIM(CATEGORY_ID)) IS NULL
+    ) AS INVALID_CATEGORY_ID,
+
+    COUNT_IF(
+        TRY_TO_NUMBER(TRIM(USER_ID)) IS NULL
+    ) AS INVALID_USER_ID,
+
+    COUNT_IF(
+        EVENT_TYPE NOT IN ('view', 'cart', 'purchase')
+        OR EVENT_TYPE IS NULL
+    ) AS UNEXPECTED_EVENT_TYPE
+
+FROM MY_FIRST_DB.BRONZE.RAW_EVENTS;

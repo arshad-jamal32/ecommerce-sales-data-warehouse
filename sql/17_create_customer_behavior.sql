@@ -1,0 +1,50 @@
+
+-- ============================================
+-- E-COMMERCE DATA WAREHOUSE
+-- STEP 17: GOLD CUSTOMER BEHAVIOR
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS
+    MY_FIRST_DB.GOLD.CUSTOMER_BEHAVIOR
+AS
+
+SELECT
+    USER_ID,
+
+    COUNT(*) AS TOTAL_EVENTS,
+
+    COUNT_IF(EVENT_TYPE = 'view')
+        AS TOTAL_VIEWS,
+
+    COUNT_IF(EVENT_TYPE = 'cart')
+        AS TOTAL_CART_EVENTS,
+
+    COUNT_IF(EVENT_TYPE = 'purchase')
+        AS TOTAL_PURCHASE_EVENTS,
+
+    SUM(
+        CASE
+            WHEN EVENT_TYPE = 'purchase'
+            THEN PRICE
+            ELSE 0
+        END
+    ) AS TOTAL_REVENUE,
+
+    COUNT(DISTINCT PRODUCT_ID)
+        AS UNIQUE_PRODUCTS_INTERACTED,
+
+    COUNT(DISTINCT CATEGORY_ID)
+        AS UNIQUE_CATEGORIES_INTERACTED,
+
+    COUNT(DISTINCT USER_SESSION)
+        AS TOTAL_SESSIONS,
+
+    MIN(EVENT_TIME)
+        AS FIRST_EVENT_TIME,
+
+    MAX(EVENT_TIME)
+        AS LAST_EVENT_TIME
+
+FROM MY_FIRST_DB.SILVER.CLEAN_EVENTS
+
+GROUP BY USER_ID;

@@ -1,0 +1,58 @@
+
+-- ============================================
+-- E-COMMERCE DATA WAREHOUSE
+-- STEP 29: SNOWFLAKE STREAM DEMONSTRATION
+-- ============================================
+
+-- 1. Create a stream on the demo product table
+CREATE OR REPLACE STREAM
+    MY_FIRST_DB.SILVER.PRODUCTS_CHANGE_STREAM
+ON TABLE
+    MY_FIRST_DB.SILVER.DIM_PRODUCTS_MERGE_DEMO;
+
+
+-- 2. Update an existing product
+UPDATE MY_FIRST_DB.SILVER.DIM_PRODUCTS_MERGE_DEMO
+SET
+    BRAND = 'stream_demo_updated'
+WHERE PRODUCT_ID = 1005115;
+
+
+-- 3. Insert a new demo product
+INSERT INTO MY_FIRST_DB.SILVER.DIM_PRODUCTS_MERGE_DEMO
+(
+    PRODUCT_ID,
+    CATEGORY_ID,
+    CATEGORY_CODE,
+    BRAND,
+    BRAND_VARIANT_COUNT,
+    BRAND_CONFLICT_FLAG
+)
+SELECT
+    999999999998,
+    NULL,
+    'stream_demo_category',
+    'stream_demo_brand',
+    1,
+    FALSE
+WHERE NOT EXISTS
+(
+    SELECT 1
+    FROM MY_FIRST_DB.SILVER.DIM_PRODUCTS_MERGE_DEMO
+    WHERE PRODUCT_ID = 999999999998
+);
+
+
+-- 4. Read captured changes
+SELECT
+    PRODUCT_ID,
+    BRAND,
+    METADATA$ACTION,
+    METADATA$ISUPDATE,
+    METADATA$ROW_ID
+FROM MY_FIRST_DB.SILVER.PRODUCTS_CHANGE_STREAM
+ORDER BY PRODUCT_ID, METADATA$ACTION;
+
+
+-- 5. Check stream status
+SHOW STREAMS IN SCHEMA MY_FIRST_DB.SILVER;

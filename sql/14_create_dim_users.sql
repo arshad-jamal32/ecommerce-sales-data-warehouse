@@ -1,0 +1,19 @@
+-- ============================================
+-- E-COMMERCE DATA WAREHOUSE
+-- STEP 14: CREATE USER DIMENSION
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS
+    MY_FIRST_DB.SILVER.DIM_USERS
+AS
+
+SELECT
+    USER_ID,
+
+    MIN(EVENT_TIME) AS FIRST_EVENT_TIME,
+
+    MAX(EVENT_TIME) AS LAST_EVENT_TIME
+
+FROM MY_FIRST_DB.SILVER.CLEAN_EVENTS
+
+GROUP BY USER_ID;

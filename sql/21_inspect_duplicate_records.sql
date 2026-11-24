@@ -1,0 +1,37 @@
+
+-- ============================================
+-- E-COMMERCE DATA WAREHOUSE
+-- STEP 21: INSPECT DUPLICATE RECORDS
+-- ============================================
+
+SELECT
+    EVENT_TIME,
+    EVENT_TYPE,
+    PRODUCT_ID,
+    CATEGORY_ID,
+    CATEGORY_CODE,
+    BRAND,
+    PRICE,
+    USER_ID,
+    USER_SESSION,
+
+    COUNT(*) AS OCCURRENCES
+
+FROM MY_FIRST_DB.SILVER.CLEAN_EVENTS
+
+GROUP BY
+    EVENT_TIME,
+    EVENT_TYPE,
+    PRODUCT_ID,
+    CATEGORY_ID,
+    CATEGORY_CODE,
+    BRAND,
+    PRICE,
+    USER_ID,
+    USER_SESSION
+
+HAVING COUNT(*) > 1
+
+ORDER BY OCCURRENCES DESC
+
+LIMIT 20;

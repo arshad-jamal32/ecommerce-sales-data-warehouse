@@ -1,0 +1,14 @@
+
+-- ============================================
+-- E-COMMERCE DATA WAREHOUSE
+-- STEP 05: LOAD DATA INTO BRONZE
+-- ============================================
+
+COPY INTO MY_FIRST_DB.BRONZE.RAW_EVENTS
+FROM @MY_FIRST_DB.BRONZE.EVENTS_STAGE
+FILES = ('2019-Oct.csv.gz')
+FILE_FORMAT = (
+    FORMAT_NAME = 'MY_FIRST_DB.BRONZE.CSV_GZIP_FORMAT'
+)
+ON_ERROR = 'ABORT_STATEMENT'
+PURGE = FALSE;
