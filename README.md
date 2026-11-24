@@ -38,41 +38,63 @@ Python scripts extract Gold-layer data, validate exported datasets, and generate
 
 The original dataset is large and is not included in this repository. Obtain it from its original Kaggle source and configure the Snowflake ingestion process separately.
 
+
 ## 4. Data Warehouse Architecture
 
 ```text
-             E-Commerce Event Dataset
-                       |
-                       v
-                BRONZE LAYER
-                 Raw Events
-                       |
-                       v
-                 SILVER LAYER
-             Cleaned and Prepared Data
-                       |
-                       v
-                  GOLD LAYER
-              Analytical Data Models
-                       |
-          +------------+------------+
-          |            |            |
-          v            v            v
-      Daily Sales  Product       Customer
-                   Performance   Behavior
-          |
-          v
-     Conversion Funnels
-          |
-          v
-   Python Data Extraction
-          |
-          v
-   CSV Validation and Audits
-          |
-          v
-   Static Charts and Interactive Dashboard
+              REES46 E-COMMERCE DATASET
+                     October 2019
+                           |
+                           v
+              +-------------------------+
+              |      BRONZE LAYER       |
+              |       RAW_EVENTS        |
+              +-------------------------+
+                           |
+                           v
+              +-------------------------+
+              |      SILVER LAYER       |
+              |                         |
+              |      CLEAN_EVENTS       |
+              |      DIM_PRODUCTS       |
+              |      DIM_USERS          |
+              +-------------------------+
+                           |
+                           v
+              +----------------------------------+
+              |           GOLD LAYER             |
+              |                                  |
+              |   DAILY_SALES                    |
+              |   PRODUCT_PERFORMANCE            |
+              |   CUSTOMER_BEHAVIOR              |
+              |   CONVERSION_FUNNEL              |
+              |   CONVERSION_FUNNEL_SEQUENTIAL   |
+              +----------------------------------+
+                           |
+                           v
+              +-------------------------+
+              |   PYTHON EXTRACTION     |
+              |                         |
+              |   4 GOLD TABLE EXPORTS  |
+              |   4 CSV FILES           |
+              +-------------------------+
+                           |
+                           v
+              +-------------------------+
+              |    DATA VALIDATION      |
+              |    AND VISUAL AUDITS    |
+              +-------------------------+
+                           |
+                           v
+              +-------------------------+
+              |   REPORTS & ANALYTICS   |
+              |                         |
+              |   6 STATIC CHARTS       |
+              |   INTERACTIVE DASHBOARD |
+              +-------------------------+
 ```
+
+The warehouse follows a Bronze-Silver-Gold architecture. Raw events are loaded into Bronze, cleaned and prepared in Silver, and transformed into five analytical Gold tables. Python extracts four Gold tables into CSV files, validates the exports, and generates six static charts and an interactive Plotly dashboard.
 
 ## 5. Gold Layer Tables
 
