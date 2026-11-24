@@ -215,12 +215,25 @@ Generated outputs are stored under `reports/`.
 
 ### Static charts
 
+The following visualizations highlight key analytical findings from the warehouse.
+
+#### 1. Daily Sales Trend
+
+![Daily Sales Trend](reports/charts/daily_sales_trend.png)
+
+#### 2. Conversion Funnel Comparison
+
+![Conversion Funnel Comparison](reports/charts/funnel_comparison.png)
+
+#### 3. Top 10 Products by Performance
+
+![Top 10 Products](reports/charts/top_10_products.png)
+
+**Additional visualizations:**
 - Daily purchase events
-- Daily sales trend
-- Funnel comparison
 - Product engagement
 - Sequential conversion funnel
-- Top 10 products
+
 
 ### Exported datasets
 
